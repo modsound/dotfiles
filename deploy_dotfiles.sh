@@ -1,33 +1,32 @@
 #!/bin/bash
 
 # set path as const
-DOTDIR="$HOME/dotfiles"
+DOT_DIR="$HOME/dotfiles"
 REPOSITORY="https://github.com/modsound/dotfiles"
 TARBALL="https://github.com/modsound/dotfiles/tarball/master"
+LOCAL_TARBALL="$HOME/dotfiles.tar.gz"
 
 # DITDIR if not found
-if [ ! -d ${DOTDIR} ]; then
+if [ ! -d ${DOT_DIR} ]; then
 
-  mkdir -p ${DOTDIR}
+  mkdir -p ${DOT_DIR}
 
   # check if it has git
-  if has "git"; then
-    git clone --recursive ${REPOSITORY} ${DOTDIR}
+  if type "git"; then
+    git clone --recursive ${REPOSITORY} ${DOT_DIR}
   # check if it has curl
-  elif has "curl"; then
-    curl -L ${TARBALL} | tar xv -
-  # check if it has wget
-  elif has "wget"; then
-    wget -O - ${TARBALL} | tar xv -
+  elif type "curl"; then
+    curl -fsSLo ${LOCAL_TARBALL} ${TARBALL}
+    tar -zxf ${LOCAL_TARBALL} --strip-components 1 -C ${DOT_DIR}
+    rm -f ${LOCAL_TARBALL}
+  # if both command no found
   else
-    echo "require git/curl/wget command"
+    echo "require git/curl command"
     exit 1
   fi
 
-  mv -f dotfiles-master ${DOTDIR}
-
   # loop files in current dir
-  cd ${DOTDIR}
+  cd ${DOT_DIR}
   for file in .??*
   do
     # set ignore files
@@ -35,10 +34,10 @@ if [ ! -d ${DOTDIR} ]; then
     [ ${file} == ".DS_Store" ] && continue
 
     # link symbolic link force
-    ln -snfv ${DOTDIR}/${file} ${HOME}/${file}
+    ln -snfv ${DOT_DIR}/${file} ${HOME}/${file}
   done
 
-# already exists DOTDIR
+# already exists DOT_DIR
 else
-  echo "Already setup"
+  echo "Maybe already setup dotfiles"
 fi
