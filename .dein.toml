@@ -1,0 +1,302 @@
+[[plugins]] # plugin manager
+repo = 'Shougo/dein.vim'
+
+# --------------------------------------------------------
+# Filer {{{
+# --------------------------------------------------------
+
+[[plugins]]
+repo = 'Shougo/vimfiler'
+depends = ['Shougo/unite.vim']
+
+[[plugins]] #search and display sources
+repo = 'Shougo/unite.vim'
+
+[[plugins]]
+repo = 'glidenote/memolist.vim'
+
+[[plugins]] # creating non existing dir when saving a file
+repo = 'mopp/autodirmake.vim'
+
+# }}}
+
+# --------------------------------------------------------
+# Buffer/Tab {{{
+# --------------------------------------------------------
+
+[[plugins]] # open tab instead of buffer
+repo = 'ap/vim-buftabline'
+
+[[plugins]] #set configuration of a temporary window
+repo = 'osyo-manga/vim-automatic'
+
+# }}}
+
+# --------------------------------------------------------
+# Statusline {{{
+# --------------------------------------------------------
+
+[[plugins]] # customize statusline
+repo = 'itchyny/lightline.vim'
+
+# }}}
+
+# --------------------------------------------------------
+# Search {{{
+# --------------------------------------------------------
+
+[[plugins]] #show the numbers of search result
+repo = 'osyo-manga/vim-anzu'
+
+# }}}
+
+# --------------------------------------------------------
+# Colorscheme {{{
+# --------------------------------------------------------
+
+[[plugins]] # colorscheme
+repo = 'vim-scripts/Wombat'
+
+# }}}
+
+# --------------------------------------------------------
+# Folding {{{
+# --------------------------------------------------------
+
+[[plugins]] # customize folding settings
+repo = 'LeafCage/foldCC.vim'
+
+# }}}
+
+# --------------------------------------------------------
+# Text Object {{{
+# --------------------------------------------------------
+
+[[plugins]] # text object plugin depends on
+repo = 'kana/vim-operator-user'
+
+[[plugins]] # text objects for indentation
+repo = 'tweekmonster/braceless.vim'
+
+# }}}
+
+# --------------------------------------------------------
+# Completion {{{
+# --------------------------------------------------------
+
+[[plugins]] # keyword completion
+repo = 'Shougo/neocomplete.vim'
+depends = 'context_filetype.vim'
+if = "has('lua')"
+on_event = 'InsertEnter'
+
+[[plugins]]
+repo = 'Shougo/neosnippet-snippets'
+depends = ['neosnippet-snippets', 'context_filetype.vim']
+on_event = 'InsertEnter'
+on_ft = 'snippet'
+
+[[plugins]]
+repo = 'Shougo/context_filetype.vim'
+
+[[plugins]] # dictionaries for neocomplete
+repo = 'pocke/dicts'
+
+[[plugins]] # auto add end tag for ruby
+repo = 'tpope/vim-endwise'
+on_event = 'InsertEnter'
+
+[[plugins]] # english source for neocomplete
+repo = 'ujihisa/neco-look'
+on_source = 'neocomplete.vim'
+
+[[plugins]] # toggle comment
+repo = 'tyru/caw.vim'
+
+[[plugins]] # ruby code completion
+repo = 'osyo-manga/vim-monster'
+on_ft = 'ruby'
+
+[[plugins]] # automatic closing of quotes, parenthesis, brackets
+repo = 'Raimondi/delimitMate'
+
+# }}}
+
+# --------------------------------------------------------
+# Block {{{
+# --------------------------------------------------------
+
+[[plugins]] # move block area easily
+repo = 't9md/vim-textmanip'
+
+# }}}
+
+# --------------------------------------------------------
+# Alignment {{{
+# --------------------------------------------------------
+
+[[plugins]] # align with a predefined set
+repo = 'junegunn/vim-easy-align'
+
+# }}}
+
+# --------------------------------------------------------
+# Move {{{
+# --------------------------------------------------------
+
+[[plugins]] # make f key more convenience
+repo = 'rhysd/clever-f.vim'
+
+[[plugins]] # make w key smarter
+repo = 'kana/vim-smartword'
+
+[[plugins]]
+repo = 'haya14busa/incsearch.vim'
+
+[[plugins]]
+repo = 'haya14busa/incsearch-easymotion.vim'
+
+# }}}
+
+# --------------------------------------------------------
+# REPL {{{
+# --------------------------------------------------------
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
+
+[[plugins]]
+repo = 'skywind3000/asyncrun.vim'
+
+# }}}
+
+# --------------------------------------------------------
+# Yank/Paste {{{
+# --------------------------------------------------------
+
+[[plugins]] # no indent when paste
+repo = 'ConradIrwin/vim-bracketed-paste.git'
+
+[[plugins]]
+repo = 'Shougo/neoyank.vim'
+
+# }}}
+
+# --------------------------------------------------------
+# Search & Replacement {{{
+# --------------------------------------------------------
+
+[[plugins]]
+repo = 'dyng/ctrlsf.vim'
+
+[[plugins]]
+repo = 'modsound/macdict-vim.git'
+
+[[plugins]]
+repo = 'osyo-manga/vim-over.git'
+
+[[plugins]]
+repo = 'tpope/vim-surround'
+
+# }}}
+
+# --------------------------------------------------------
+# Reference {{{
+# --------------------------------------------------------
+
+[[plugins]] # use japanese vim help
+repo = 'vim-jp/vimdoc-ja'
+
+[[plugins]]
+repo = 'thinca/vim-ref'
+
+# }}}
+
+# --------------------------------------------------------
+# Others {{{
+# --------------------------------------------------------
+
+[[plugins]] # background processing
+repo = 'Shougo/vimproc.vim'
+build = 'make'
+
+[[plugins]]
+repo = 'tyru/open-browser.vim'
+
+# }}}
+
+# --------------------------------------------------------
+# Syntax {{{
+# --------------------------------------------------------
+
+[[plugins]]
+repo = 'cespare/vim-toml'
+on_ft = 'toml'
+
+[[plugins]]
+repo = 'tpope/vim-markdown'
+on_ft = ['md', 'mkd']
+
+[[plugins]]
+repo = 'elzr/vim-json'
+
+[[plugins]]
+repo = 'itchyny/vim-cursorword'
+
+[[plugins]]
+repo = 'itchyny/vim-parenmatch'
+
+# }}}
+
+# --------------------------------------------------------
+# Ruby {{{
+# --------------------------------------------------------
+
+[[plugins]]
+repo = 'tpope/vim-rails' 
+
+[[plugins]]
+repo = 'vim-ruby/vim-ruby'
+on_ft = ['ruby', 'eruby']
+
+[[plugins]]
+repo = 'basyura/unite-rails'
+
+[[plugins]]
+repo = 'tpope/vim-rake'
+
+# }}}
+
+# --------------------------------------------------------
+# Python {{{
+# --------------------------------------------------------
+
+[[plugins]] # completion for python
+repo = 'davidhalter/jedi-vim'
+on_ft = 'python'
+
+# }}}
+
+# --------------------------------------------------------
+# Html {{{
+# --------------------------------------------------------
+
+[[plugins]]
+repo = 'mattn/emmet-vim'
+
+# }}}
+
+# --------------------------------------------------------
+# Git {{{
+# --------------------------------------------------------
+
+[[plugins]] # show VCS log in current buffer
+repo = 'mhinz/vim-signify' 
+
+[[plugins]] # git command wraper
+repo = 'tpope/vim-fugitive' 
+
+[[plugins]] # git log viewer
+repo = 'cohama/agit.vim' 
+
+# }}}
