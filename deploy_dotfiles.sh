@@ -6,7 +6,7 @@ REPOSITORY="https://github.com/modsound/dotfiles"
 TARBALL="https://github.com/modsound/dotfiles/tarball/master"
 LOCAL_TARBALL="$HOME/dotfiles.tar.gz"
 
-# DITDIR if not found
+# DOTDIR if not found
 if [ ! -d ${DOT_DIR} ]; then
 
   mkdir -p ${DOT_DIR}
@@ -16,7 +16,9 @@ if [ ! -d ${DOT_DIR} ]; then
     git clone --recursive ${REPOSITORY} ${DOT_DIR}
   # check if it has curl
   elif type "curl"; then
+    # copy remote tarball to local
     curl -fsSLo ${LOCAL_TARBALL} ${TARBALL}
+    # extract tarball
     tar -zxf ${LOCAL_TARBALL} --strip-components 1 -C ${DOT_DIR}
     rm -f ${LOCAL_TARBALL}
   # if both command no found
