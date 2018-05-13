@@ -1,45 +1,28 @@
 #!/bin/sh
 
+# maintainer: 
+#   modsound@gmail.com
+# abs: 
+#   install brew related apps
+#   need brewfile in ~/dotfiles/ before you run
+# check:
+#   run 'brew bundle dump', if you make a list brew apps installed as Brewfile
+
+DOT_DIR="$HOME/dotfiles/Brewfile"
+
+# install xcode command line tool
+xcode-select --install
+
 # install brew
 bash /usr/bin/ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-# set cask
-brew tap caskroom/cask
 
-# -----------------------------------
-# BREW CASK:
-# -----------------------------------
+# check if exists Brewfile
+if [ -e ${DOT_DIR}/Brewfile ]; then
 
-# set brew app names for cask
-brew_cask_apps=(
-  "iterm2"
-  "dropbox"
-  "firefox"
-  "vlc"
-  "xee"
-  "the-unarchiver"
-)
+  cd ${DOT_DIR}
+  brew bundle
 
-# install each cask names
-for app in ${brew_cask_apps[@]}; do
-  brew cask install ${app}
-done
-
-# cleanup
-brew cask cleanup
-
-# -----------------------------------
-# BREW:
-# -----------------------------------
-
-# set brew app names
-brew_apps=(
-  "vim --with-lua"
-  "rbenv"
-  "pyenv"
-  "fish"
-)
-
-# install each cask names
-for app in ${brew_apps[@]}; do
-  brew install ${app}
-done
+# if not exists Brewfile
+else
+  echo "Not found Brewfile"
+fi

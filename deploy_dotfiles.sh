@@ -1,5 +1,11 @@
 #!/bin/bash
 
+# maintainer: 
+#   modsound@gmail.com
+# abs: 
+#   download dotfiles to your home directory and alias each file
+#   skip if already exist dotfiles directory
+
 # set path as const
 DOT_DIR="$HOME/dotfiles"
 REPOSITORY="https://github.com/modsound/dotfiles"
