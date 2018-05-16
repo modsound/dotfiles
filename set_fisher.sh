@@ -13,3 +13,12 @@ else
   echo "Already install fisherman"
 fi
 
+# make completion from man
+# fish -c 'fish_update_completions'
+
+# apps
+apps=(z edc/bass fzf spin)
+# install each app 
+for app in ${apps[@]}; do
+  fish -c "fisher $app"
+done
