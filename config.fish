@@ -1,6 +1,12 @@
 # disable greeting
 set fish_greeting
 
+# path
+set -x PATH /usr/local/bin $PATH
+
+# init rbenv
+rbenv init - | source
+
 # cd alias
 alias ..='cd ../'
 alias ...='cd ../..'

@@ -17,7 +17,7 @@ fi
 # fish -c 'fish_update_completions'
 
 # apps
-apps=(z edc/bass fzf spin)
+apps=(z edc/bass fzf spin humanize_duration)
 # install each app 
 for app in ${apps[@]}; do
   fish -c "fisher $app"

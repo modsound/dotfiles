@@ -478,6 +478,10 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
     \ 'cmdopt': 'bundle exec',
     \ 'exec': '%o %c %s',
   \ }
+  " markdown (require kramdown)
+  let g:quickrun_config['markdown'] = {
+    \ 'outputter': "browser",
+  \ }
 
 " }}} /Settings:
 
