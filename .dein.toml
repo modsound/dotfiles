@@ -42,20 +42,14 @@ repo = 'itchyny/lightline.vim'
 # }}}
 
 # --------------------------------------------------------
-# Search {{{
-# --------------------------------------------------------
-
-[[plugins]] #show the numbers of search result
-repo = 'osyo-manga/vim-anzu'
-
-# }}}
-
-# --------------------------------------------------------
 # Colorscheme {{{
 # --------------------------------------------------------
 
 [[plugins]] # colorscheme
 repo = 'vim-scripts/Wombat'
+
+[[plugins]] # colorscheme
+repo = 'morhetz/gruvbox'
 
 # }}}
 
@@ -188,6 +182,9 @@ repo = 'Shougo/neoyank.vim'
 
 [[plugins]]
 repo = 'dyng/ctrlsf.vim'
+
+[[plugins]] #show the numbers of search result
+repo = 'osyo-manga/vim-anzu'
 
 [[plugins]]
 repo = 'modsound/macdict-vim.git'

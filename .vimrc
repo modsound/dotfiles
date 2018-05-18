@@ -119,7 +119,8 @@ set background=dark                " colorschemeの傾向
 if has('termguicolors')            " True color対応
   set termguicolors
 endif
-colorscheme wombat                 " colorscheme
+" colorscheme wombat                 " colorscheme
+colorscheme gruvbox
 highlight link EndOfBuffer Ignore  " no tilde at end of buffer
 
 set clipboard+=unnamedplus,unnamed " share clipboard to OS
