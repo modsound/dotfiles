@@ -10,9 +10,9 @@
 " Dein: {{{
 " -----------------------------------------------------------------------
 
-" assign a directory for vimscript
+" set a directory for vimscript
 let s:dein_dir = expand('~/.vim/dein')
-" assign a directory for dein.vim
+" set a directory for dein.vim
 let s:dein_repo_dir = s:dein_dir . '/repos/github.com/Shougo/dein.vim'
 
 if &compatible
@@ -27,16 +27,16 @@ execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 
 " import plugins
 if dein#load_state(s:dein_dir)
-  " assign a directory for toml file
+  " set a directory for toml file
   let g:rc_dir = expand('~/')
 
-  " assign a toml file
+  " set a toml file
   let s:toml = g:rc_dir . '.dein.toml'
   if filereadable(s:toml)
     call dein#load_toml(s:toml, {'lazy': 0})
   endif
 
-  " assign a toml file for lazy loading
+  " set a toml file for lazy loading
   let s:lazy_toml = g:rc_dir . '.dein_lazy.toml'
   if filereadable(s:lazy_toml)
     call dein#load_toml(s:lazy_toml, {'lazy': 1})
@@ -94,18 +94,18 @@ set foldmethod=marker              " set fold marker
 set foldtext=FoldCCtext()          " set plugin for fold
 
 " move
-set nostartofline                  " 行頭に移動しない
-set whichwrap=b,s,h,l,<,>,[,]      " 行を跨いで移動できる
+set nostartofline                  " no move to BOL
+set whichwrap=b,s,h,l,<,>,[,]      " go to next line
 
 " show
 set number                         " show line number
 set numberwidth=3
 set shortmess+=I                   " no startup logo
-set showmatch matchtime=1          " 対応する括弧を強調表示する
-set display+=lastline              " 画面最後の行をできるだけ表示する
-set scrolloff=2                    " スクロール時の上下余白設定
+set showmatch matchtime=1          " hilighting brackets
+set display+=lastline              " show as much as possible of the last line
+set scrolloff=2                    " margin when scroll
 if exists('&ambiwidth')
-  set ambiwidth=double             " マルチバイト表示がずれないようにする
+  set ambiwidth=double             " use twice the width of ASCII characters
 endif
 set signcolumn=yes                 " alway show signcolumn
 
@@ -115,7 +115,7 @@ augroup Colorscheme
   autocmd ColorScheme * highlight LineNr guibg=#242424
 augroup END
 
-set background=dark                " colorschemeの傾向
+set background=dark                " colorscheme trend
 if has('termguicolors')            " True color対応
   set termguicolors
 endif
@@ -123,11 +123,11 @@ endif
 colorscheme gruvbox
 highlight link EndOfBuffer Ignore  " no tilde at end of buffer
 
-set clipboard+=unnamedplus,unnamed " share clipboard to OS
+set clipboard+=unnamedplus,unnamed " share clipboard with OS
 set autoread                       " auto read, if the other buffer changed
-set confirm                        " コマンド実行時、バッファが変更されていたらファイル保存の確認を求める
-set wildmenu                       " コマンドモードで入力候補を表示する
-set backspace=indent,eol,start     " バックスペースで削除できるものを指定
+set confirm                        " if run command after buffer change, confirm save
+set wildmenu                       " suggest in command mode
+set backspace=indent,eol,start     " delete when enter backspace
 set splitbelow                     " if split, new window opens below
 set splitright                     " if split, new window opens below
 set noequalalways                  " no window size auto adjust
@@ -137,7 +137,7 @@ set isk+=-                         " set keyword to include text object
 hi ZenkakuSpace cterm=underline ctermfg=lightblue guibg=darkgray
 match ZenkakuSpace /　/
 
-" ファイルオープン時、最後にカーソルがあった場所に移動する
+" move cursor at where last buffer open
 augroup OpenPreviousCursor
   autocmd!
   autocmd BufRead * if line("'\"") > 0 && line("'\"") <= line("$") |
@@ -176,14 +176,14 @@ nnoremap <silent>q :<C-u>bdelete<CR>
 " change to normal mode
 inoremap <silent>jj <ESC>
 
-" 空行を挿入する
+" insert blank line
 nnoremap <silent>; :<C-u>call append(expand('.'), '')<CR>j
 
-" 表示行で移動する
+" move cursor by display lines
 noremap j gj
 noremap k gk
 
-" Insert Modeのカーソル移動
+" move cursor in insert mode
 inoremap <C-h> <Left>
 inoremap <C-j> <Down>
 inoremap <C-k> <Up>
@@ -503,27 +503,27 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
 
   if has('lua')
     let g:neocomplete#disable_auto_complete = 0
-    " 大文字を入力するまで大文字小文字の区別をしない
+    " ignore case until input uppercase
     let g:neocomplete#enable_smart_case = 1
     let g:neocomplete#enable_camel_case = 1
     let g:neocomplete#enable_underbar_completion = 1
-    " シンタックス補完を開始する文字数
+    " word count when start to syntax complete
     let g:neocomplete#sources#syntax#min_keyword_length = 3
     let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-    " 起動時に有効化する
+    " enable at startup
     let g:neocomplete#enable_at_startup = 1
-    " 自動補完を開始する文字数
+    " word count when start to auto complete
     let g:neocomplete#auto_completion_start_length = 2
-    " 手動補完を開始する文字数
+    " word count when start to complete manually
     let g:neocomplete#manual_completion_start_length = 0
-    " 最小のキーワード文字数
+    " minimum keyword count
     let g:neocomplete#min_keyword_length = 3
     " enable fuzzy searching
     let g:neocomplete#enable_fuzzy_completion = 1
     " insert delimiter automatically
     let g:neocomplete#enable_auto_delimiter = 1
 
-    " filetypeの認識
+    " filetype
     if !exists('g:neocomplete#same_filetypes')
       let g:neocomplete#same_filetypes = {}
     endif
@@ -545,7 +545,7 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
       \ }
     endif
 
-    " バッファを開いたらキャッシュする
+    " cache when buffer open
     autocmd BufReadPost,BufEnter,BufWritePost :neocompleteCachingBuffer <buffer>
     
     " enable omnifunc
@@ -818,9 +818,9 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
 
 " Settings: {{{
 
-  let g:memolist_path = $HOME."/Dropbox/memo" " 保存先の指定
-  let g:memolist_memo_suffix = "md"           " 保存形式の指定
-  let g:memolist_filename_prefix_none = 1     " ファイル名のprefixをなしに
+  let g:memolist_path = $HOME."/Dropbox/memo" " set directory for save
+  let g:memolist_memo_suffix = "md"           " no filename extension
+  let g:memolist_filename_prefix_none = 1     " no filename prefix
   let g:memolist_vimfiler = 1
   let g:memolist_vimfiler_option = "-buffer-name=explore"
 
