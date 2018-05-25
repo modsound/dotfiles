@@ -126,7 +126,7 @@ highlight link EndOfBuffer Ignore  " no tilde at end of buffer
 set clipboard+=unnamedplus,unnamed " share clipboard with OS
 set autoread                       " auto read, if the other buffer changed
 set confirm                        " if run command after buffer change, confirm save
-set wildmenu                       " suggest in command mode
+set wildmenu                       " suggest in command mode with TAB key
 set backspace=indent,eol,start     " delete when enter backspace
 set splitbelow                     " if split, new window opens below
 set splitright                     " if split, new window opens below
@@ -173,7 +173,7 @@ nnoremap <silent><Leader>e, :<C-u>edit ~/.dein.toml<CR>
 " close buffer
 nnoremap <silent>q :<C-u>bdelete<CR>
 
-" change to normal mode
+" back to normal mode
 inoremap <silent>jj <ESC>
 
 " insert blank line
@@ -189,6 +189,16 @@ inoremap <C-j> <Down>
 inoremap <C-k> <Up>
 inoremap <C-l> <Right>
 
+" move cursor in command mode
+cnoremap <C-a> <Home>
+cnoremap <C-b> <Left>
+cnoremap <C-d> <Del>
+cnoremap <C-f> <Right>
+cnoremap <C-n> <Down>
+cnoremap <C-p> <Up>
+cnoremap <M-b> <S-Left>
+cnoremap <M-f> <S-Right>
+
 " page scroll
 nnoremap <CR> <C-f>
 
@@ -203,7 +213,7 @@ nnoremap <silent><S-TAB>    :<C-u>wincmd W<CR> " back to previous window
 nnoremap <silent><C-j> :<C-u>keepjumps normal! }<CR>
 nnoremap <silent><C-k> :<C-u>keepjumps normal! {<CR>
 
-" change buffer
+" move to other buffer
 nnoremap <silent><C-n> :<C-u>bnext<CR>
 nnoremap <silent><C-p> :<C-u>bprevious<CR>
 
@@ -225,6 +235,10 @@ nnoremap <silent>p p`]
 
 " open terminal
 nnoremap <silent><Leader>t :<C-u>terminal<CR>
+
+" replace
+nnoremap <Leader>su :%s///gc<Left><Left><Left><Left>
+vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " }}}
 
@@ -367,24 +381,145 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
 " }}} /unite
 
 " -----------------------------------------------------------------------
-" neoyank {{{
+" ctrlsf {{{
 " -----------------------------------------------------------------------
-" browses a history of yank registers
+
+" Settings: ctrlsf {{{
+
+  let g:ctrlsf_ackprg = '/usr/local/bin/rg' " set grep program
+  let g:ctrlsf_populate_qflist = 1
+  let g:ctrlsf_position = 'bottom'
+  let g:ctrlsf_auto_close = 1
+  let g:ctrlsf_winsize = '40%'
+  let g:ctrlsf_context = '-C 3'
+  let g:ctrlsf_case_sensitive = 'smart'
+  let g:ctrlsf_default_view_mode = 'compact'
+  let g:ctrlsf_absolute_file_path = 0
+
+" }}} /Settings: ctrlsf
+
+" Keymaps: ctrlsf {{{
+
+  nnoremap <C-s> :<C-u>CtrlSF<Space>
+
+" }}} /Keymaps:
+
+" }}} /ctrlsf
+
+" -----------------------------------------------------------------------
+" vim-json {{{
+" -----------------------------------------------------------------------
 
 " Settings: {{{
 
-  let g:neoyank#limit = 50
+  let g:vim_json_syntax_conceal = 0
+
+" }}} /Settings:
+
+" }}} /vim-json
+
+" -----------------------------------------------------------------------
+" foldCC {{{
+" -----------------------------------------------------------------------
+
+" Settings: {{{
+
+  let g:foldCCtext_tail = 'v:foldend-v:foldstart+1'
+
+" }}} /Settings:
+
+" }}} /foldCC
+
+" -----------------------------------------------------------------------
+" clever-f {{{
+" -----------------------------------------------------------------------
+
+" Settings: {{{
+
+  let g:clever_f_smart_case = 1
+
+" }}} /Settings:
+
+" }}} /clever-f
+
+" -----------------------------------------------------------------------
+" open-browser {{{
+" -----------------------------------------------------------------------
+
+" Keymaps: {{{
+
+  " keymaps
+  nmap <silent><Leader><CR> <Plug>(openbrowser-smart-search)
+
+" }}} /Keymaps:
+
+" }}} /open-browser
+
+" -----------------------------------------------------------------------
+" vim-smartword {{{
+" -----------------------------------------------------------------------
+
+" Keymaps: {{{
+
+  " keymaps
+  map w <Plug>(smartword-w)
+  map b <Plug>(smartword-b)
+
+" }}} /Keymaps:
+
+" }}} /vim-smartword
+
+" -----------------------------------------------------------------------
+" braceless {{{
+" -----------------------------------------------------------------------
+
+" Settings: {{{
+
+  autocmd Filetype python BracelessEnable +indent +highlight
+
+" }}} /Settings:
+
+" }}} /vim-operator-surround
+
+" -----------------------------------------------------------------------
+" vim-textmanip {{{
+" -----------------------------------------------------------------------
+
+" Keymaps: {{{
+
+  " move block
+  vmap <C-j> <Plug>(textmanip-move-down)
+  vmap <C-k> <Plug>(textmanip-move-up)
+  vmap <C-h> <Plug>(textmanip-move-left)
+  vmap <C-l> <Plug>(textmanip-move-right)
+
+" }}} /Keymaps:
+
+" }}} /vim-textmanip
+
+" -----------------------------------------------------------------------
+" yankround {{{
+" -----------------------------------------------------------------------
+
+" Settings: {{{
+
+  " hilight yankround area
+  let g:yankround_use_region_hl = 1
 
 " }}} /Settings:
 
 " Keymaps: {{{
 
-  " open histories
-  nnoremap <Leader>y :<C-u>Unite history/yank<CR>
+  nmap p <Plug>(yankround-p)
+  nmap P <Plug>(yankround-P)
+  nmap gp <Plug>(yankround-gp)
+  nmap gP <Plug>(yankround-gP)
+  nmap <C-p> <Plug>(yankround-prev)
+  nmap <C-n> <Plug>(yankround-next)
 
 " }}} /Keymaps:
 
-" }}} /neoyank
+" }}} /yankround
 
 " -----------------------------------------------------------------------
 " automatic {{{
@@ -452,6 +587,27 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
 " }}} /buftabline
 
 " -----------------------------------------------------------------------
+" Qfreplace {{{
+" -----------------------------------------------------------------------
+
+" Keymaps: {{{
+
+  " setting in filetype qf
+  augroup QfreplaceInit
+    autocmd!
+    autocmd FileType ctrlsf call s:qfreplace_settings()
+  augroup END
+
+  function! s:qfreplace_settings()
+    " run qfreplace
+    nmap <buffer> <Leader>q :<C-u>Qfreplace<CR>
+  endfunction
+
+" }}} /Keymaps:
+
+" }}} /Qfreplace
+
+" -----------------------------------------------------------------------
 " quickrun {{{
 " -----------------------------------------------------------------------
 
@@ -485,13 +641,6 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
   \ }
 
 " }}} /Settings:
-
-" Keymaps: {{{
-
-  " run
-  nnoremap <Leader>q :<C-u>QuickRun<CR>
-
-" }}} /Keymaps:
 
 " }}} /quickrun
 
@@ -706,18 +855,6 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
 " }}} /openbrowser
 
 " -----------------------------------------------------------------------
-" vim-over {{{
-" -----------------------------------------------------------------------
-
-" Mappings: {{{
-
-  nnoremap rep :OverCommandLine<CR>%s/<C-r><C-w>//gc<Left><Left><Left>
-
-" }}} /Mappings:
-
-" }}} /vim-over
-
-" -----------------------------------------------------------------------
 " jedi {{{
 " -----------------------------------------------------------------------
 " python completion
@@ -760,7 +897,7 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
   nnoremap [git]a :<C-u>Gwrite<CR>
   nnoremap [git]s :<C-u>Gstatus<CR>
   nnoremap [git]c :<C-u>Gcommit<CR>
-  nnoremap [git]d :<C-u>Gvdiff<CR>
+  nnoremap [git]d :<C-u>Gvdiff master<CR>
   nnoremap [git]p :<C-u>Git push origin master<CR>
 
 " }}} /Keymaps:
@@ -849,122 +986,5 @@ nnoremap <silent><Leader>t :<C-u>terminal<CR>
 
 " }}} /vim-monster
 
-" -----------------------------------------------------------------------
-" ctrlsf {{{
-" -----------------------------------------------------------------------
-
-" Settings: ctrlsf {{{
-
-  let g:ctrlsf_ackprg = '/usr/local/bin/rg' " set grep program
-  let g:ctrlsf_populate_qflist = 1
-  let g:ctrlsf_position = 'bottom'
-  let g:ctrlsf_auto_close = 1
-  let g:ctrlsf_winsize = '40%'
-  let g:ctrlsf_context = '-C 3'
-  let g:ctrlsf_case_sensitive = 'smart'
-  let g:ctrlsf_default_view_mode = 'compact'
-  let g:ctrlsf_absolute_file_path = 0
-
-" }}} /Settings: ctrlsf
-
-" Keymaps: ctrlsf {{{
-
-  nnoremap <Leader>f :<C-u>CtrlSF<Space>
-
-" }}} /ctrlsf
-
-" -----------------------------------------------------------------------
-" vim-json {{{
-" -----------------------------------------------------------------------
-
-" Settings: {{{
-
-  let g:vim_json_syntax_conceal = 0
-
-" }}} /Settings:
-
-" }}} /vim-json
-
-" -----------------------------------------------------------------------
-" foldCC {{{
-" -----------------------------------------------------------------------
-
-" Settings: {{{
-
-  let g:foldCCtext_tail = 'v:foldend-v:foldstart+1'
-
-" }}} /Settings:
-
-" }}} /foldCC
-
-" -----------------------------------------------------------------------
-" clever-f {{{
-" -----------------------------------------------------------------------
-
-" Settings: {{{
-
-  let g:clever_f_smart_case = 1
-
-" }}} /Settings:
-
-" }}} /clever-f
-
-" -----------------------------------------------------------------------
-" open-browser {{{
-" -----------------------------------------------------------------------
-
-" Keymaps: {{{
-
-  " keymaps
-  nmap <silent><Leader><CR> <Plug>(openbrowser-smart-search)
-
-" }}} /Keymaps:
-
-" }}} /open-browser
-
-" -----------------------------------------------------------------------
-" vim-smartword {{{
-" -----------------------------------------------------------------------
-
-" Keymaps: {{{
-
-  " keymaps
-  map w <Plug>(smartword-w)
-  map b <Plug>(smartword-b)
-
-" }}} /Keymaps:
-
-" }}} /vim-smartword
-
-" -----------------------------------------------------------------------
-" braceless {{{
-" -----------------------------------------------------------------------
-
-" Settings: {{{
-
-  autocmd Filetype python BracelessEnable +indent +highlight
-
-" }}} /Settings:
-
-" }}} /vim-operator-surround
-
-" -----------------------------------------------------------------------
-" vim-textmanip {{{
-" -----------------------------------------------------------------------
-
-" Keymaps: {{{
-
-  " move block
-  vmap <C-j> <Plug>(textmanip-move-down)
-  vmap <C-k> <Plug>(textmanip-move-up)
-  vmap <C-h> <Plug>(textmanip-move-left)
-  vmap <C-l> <Plug>(textmanip-move-right)
-
-" }}} /Keymaps:
-
-" }}} /vim-textmanip
-
 " }}} /Plugin Settings:
-
-" }}} /vimrc
 
