@@ -12,3 +12,6 @@
 	ui = auto
 [core]
   editor = /usr/local/bin/vim
+[alias]
+	unstage = reset HEAD --
+  logg = log --graph --date=short --decorate=full --pretty=format:'%C(green)%h %cd %C(blue)%cn %C(reset)%s'

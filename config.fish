@@ -11,6 +11,7 @@ rbenv init - | source
 alias ..='cd ../'
 alias ...='cd ../..'
 alias p='cd ~/Documents/code/'
+alias die='rm -rf'
 
 # app alias
 alias v='vim'

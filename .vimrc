@@ -19,13 +19,13 @@ if &compatible
 	set nocompatible
 endif
 
-" install dein.vim, if it does not exists
+" install dein.vim, if not exists the directory
 if !isdirectory(s:dein_repo_dir)
 	execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_dir
 endif
 execute 'set runtimepath^=' . fnamemodify(s:dein_repo_dir, ':p')
 
-" import plugins
+" load plugins
 if dein#load_state(s:dein_dir)
   " set a directory for toml file
   let g:rc_dir = expand('~/')
@@ -66,7 +66,7 @@ filetype plugin indent on          " import plugin for filetype and indent
 set tabstop=2                      " use space not tab
 set shiftwidth=2                   " auto indent shiftwidth=n
 set expandtab                      " insert not tab but space
-set softtabstop=2                  " when set expandtab, softtabstop=n means space
+set softtabstop=2                  " softtabstop=n means space, if set expandtab
 set autoindent                     " set indent as previous line
 set smartindent
 set smarttab                       " if at bol, insert number count shiftwidth set, else insert space number tabstop set 
@@ -153,6 +153,13 @@ augroup fileTypeIndent
     \ softtabstop=2 shiftwidth=2 tabstop=2 expandtab
 augroup END
 
+" set no buffer list
+function! s:set_scratch()
+  setlocal bufhidden=unload
+  setlocal nobuflisted
+  setlocal buftype=nofile
+endfunction
+
 " }}}
 
 " -----------------------------------------------------------------------
@@ -213,9 +220,10 @@ nnoremap <silent><S-TAB>    :<C-u>wincmd W<CR> " back to previous window
 nnoremap <silent><C-j> :<C-u>keepjumps normal! }<CR>
 nnoremap <silent><C-k> :<C-u>keepjumps normal! {<CR>
 
-" move to other buffer
-nnoremap <silent><C-n> :<C-u>bnext<CR>
-nnoremap <silent><C-p> :<C-u>bprevious<CR>
+" move to the other buffer
+" link to yankround settings
+nnoremap <silent><SID>(bn) :<C-u>bnext<CR>
+nnoremap <silent><SID>(bp) :<C-u>bprevious<CR>
 
 " change window size
 nnoremap <silent><Up>    <C-w>-
@@ -276,16 +284,16 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Keymaps: {{{
 
-  " open
+  " run
   nnoremap <silent><Leader>v :<C-u>VimFiler -buffer-name=explore<CR>
 
-  " initialize
+  " setting in filetype vimfiler
   augroup VimFilerInit
     autocmd! 
-    autocmd FileType vimfiler call s:vimfiler_settings()
+    autocmd FileType vimfiler call <SID>vimfiler_settings() | call <SID>set_scratch()
   augroup END
 
-  " control vimfiler
+  " keymaps for vimfiler
   function! s:vimfiler_settings()
     nmap <buffer> e <Plug>(vimfiler_edit_file)
     nmap <buffer> o <Plug>(vimfiler_edit_file)
@@ -362,7 +370,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Keymaps: {{{
 
-  " set keymaps in unite mode
+  " setting in unite mode
   augroup UniteInit
     autocmd!
     autocmd FileType unite call s:unite_my_settings()
@@ -384,7 +392,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 " ctrlsf {{{
 " -----------------------------------------------------------------------
 
-" Settings: ctrlsf {{{
+" Settings: {{{
 
   let g:ctrlsf_ackprg = '/usr/local/bin/rg' " set grep program
   let g:ctrlsf_populate_qflist = 1
@@ -448,7 +456,6 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Keymaps: {{{
 
-  " keymaps
   nmap <silent><Leader><CR> <Plug>(openbrowser-smart-search)
 
 " }}} /Keymaps:
@@ -461,7 +468,6 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Keymaps: {{{
 
-  " keymaps
   map w <Plug>(smartword-w)
   map b <Plug>(smartword-b)
 
@@ -514,8 +520,10 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
   nmap P <Plug>(yankround-P)
   nmap gp <Plug>(yankround-gp)
   nmap gP <Plug>(yankround-gP)
-  nmap <C-p> <Plug>(yankround-prev)
-  nmap <C-n> <Plug>(yankround-next)
+  " after run yankround, continue. otherwise move buffer next/previous
+  " link to bnext, bprevious
+  nmap <expr><C-p> yankround#is_active() ? "\<Plug>(yankround-prev)" : "<SID>(bp)"
+  nmap <expr><C-n> yankround#is_active() ? "\<Plug>(yankround-next)" : "<SID>(bn)"
 
 " }}} /Keymaps:
 
@@ -580,7 +588,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
   hi! link BufTabLineCurrent Function
 
   " indicate buffer's state
-  let g:buftabline_indicators=1
+  let g:buftabline_indicators = 1
 
 " }}} /Settings:
 
@@ -725,7 +733,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Keymaps: {{{
 
-  " execute
+  " run
   inoremap <expr><S-J> pumvisible() ? "\<C-n>" : "\<S-J>"
   inoremap <expr><S-K> pumvisible() ? "\<C-p>" : "\<S-K>"
   inoremap <expr><TAB> pumvisible() ? "\<C-n>" : "\<TAB>"
@@ -740,8 +748,9 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Keymaps: {{{
 
-  " refer
+  " search word you select
   vnoremap <silent>// y:<C-u>MacDict<Space><C-r>*<CR>
+  " search word you enter
   nnoremap // :<C-u>MacDict<Space>
 
 " }}} /Keymaps:
@@ -754,7 +763,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Settings: {{{
 
-  " arrange contents in statusline
+  " align contents in statusline
   let g:lightline = {
     \ 'colorscheme': 'wombat',
     \ 'active': {
@@ -807,7 +816,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Keymaps: {{{
 
-  " execute
+  " run
   nmap n <Plug>(anzu-jump-n)<Plug>(anzu-echo-search-status)
   nmap N <Plug>(anzu-jump-N)<Plug>(anzu-echo-search-status)
 
@@ -823,6 +832,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
   " comment toggle
   nmap cc <Plug>(caw:hatpos:toggle)
+  vmap cc <Plug>(caw:hatpos:toggle)
 
 " }}} /Keymaps:
 
@@ -893,7 +903,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 " Keymaps: {{{
 
   " git basic command
-  nmap <Space>g [git]
+  nmap <Leader>g [git]
   nnoremap [git]a :<C-u>Gwrite<CR>
   nnoremap [git]s :<C-u>Gstatus<CR>
   nnoremap [git]c :<C-u>Gcommit<CR>
