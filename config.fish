@@ -18,3 +18,9 @@ alias v='vim'
 alias vi='vim'
 alias g='git'
 alias r='rails'
+
+# function
+alias rmds='find . -name ".DS_Store" | xargs rm'
+
+test -e {$HOME}/.iterm2_shell_integration.fish ; and source {$HOME}/.iterm2_shell_integration.fish
+

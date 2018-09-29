@@ -1,6 +1,9 @@
 [[plugins]] # plugin manager
 repo = 'Shougo/dein.vim'
 
+[[plugins]] # dein wrapper command
+repo = 'haya14busa/dein-command.vim'
+
 # --------------------------------------------------------
 # Filer {{{
 # --------------------------------------------------------
@@ -156,14 +159,17 @@ repo = 'haya14busa/incsearch-easymotion.vim'
 # }}}
 
 # --------------------------------------------------------
-# REPL {{{
+# REPL/Test {{{
 # --------------------------------------------------------
 
 [[plugins]]
-repo = 'thinca/vim-quickrun'
+repo = 'skywind3000/asyncrun.vim'
 
 [[plugins]]
-repo = 'skywind3000/asyncrun.vim'
+repo = 'janko-m/vim-test'
+
+[[plugins]]
+repo = 'thinca/vim-quickrun'
 
 # }}}
 
@@ -197,6 +203,9 @@ repo = 'tpope/vim-surround'
 
 [[plugins]] # replace in quickfix
 repo = 'thinca/vim-qfreplace'
+
+[[plugins]]
+repo = 'mhinz/vim-grepper'
 
 # }}}
 

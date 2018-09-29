@@ -86,6 +86,8 @@ set helplang=ja,en                 " prefer japanese help
 set hlsearch                       " enable hilight search
 set incsearch                      " enable increment search
 set ignorecase                     " ignore case
+" search with very magic
+nnoremap / /\v
 
 " fold
 set foldenable
@@ -112,14 +114,13 @@ set signcolumn=yes                 " alway show signcolumn
 " colorscheme
 augroup Colorscheme
   autocmd!
-  autocmd ColorScheme * highlight LineNr guibg=#242424
+  autocmd ColorScheme * highlight LineNr guibg=#323232
 augroup END
 
 set background=dark                " colorscheme trend
 if has('termguicolors')            " True color対応
   set termguicolors
 endif
-" colorscheme wombat                 " colorscheme
 colorscheme gruvbox
 highlight link EndOfBuffer Ignore  " no tilde at end of buffer
 
@@ -241,12 +242,19 @@ vnoremap <silent>y y`]
 vnoremap <silent>p p`]
 nnoremap <silent>p p`]
 
-" open terminal
-nnoremap <silent><Leader>t :<C-u>terminal<CR>
-
-" replace
-nnoremap <Leader>su :%s///gc<Left><Left><Left><Left>
+" replace after search
+nnoremap <Leader>su :%s///gc<Left><Left><Left>
 vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
+
+" open a window as terminal mode
+nnoremap <Leader>t :vertical :terminal<CR>
+" back to terminal normal mode
+if exists("t:map")
+  tnoremap jj <C-w><S-n>
+endif
+
+" toggle relativenumber
+nnoremap <F3> :<C-u>setlocal relativenumber!<CR>
 
 " }}}
 
@@ -315,6 +323,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
     nmap <buffer> s <Plug>(vimfiler_execute_shell_command)
     nmap <buffer> gr <Plug>(vimfiler_grep)
     nmap <buffer> gf <Plug>(vimfiler_find)
+    nmap <buffer> <Space>	<Plug>(vimfiler_toggle_mark_current_line)
   endfunction
 
   " keymaps for rails directory (required vim-rails)
@@ -361,7 +370,6 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
     call unite#custom#profile('default', 'context', {
       \ 'no_quit': 1,
     \ })
-
   endif
 
   let g:unite_no_default_keymappings = 1
@@ -408,7 +416,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Keymaps: ctrlsf {{{
 
-  nnoremap <C-s> :<C-u>CtrlSF<Space>
+  nnoremap <Leader>/ :<C-u>CtrlSF<Space>
 
 " }}} /Keymaps:
 
@@ -481,6 +489,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
 " Settings: {{{
 
+  " python indent setting
   autocmd Filetype python BracelessEnable +indent +highlight
 
 " }}} /Settings:
@@ -542,26 +551,25 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
   let g:automatic_config = [
     \ {
-    \   'match': {'filetype': 'help'},
+    \   'match': {
+    \     'filetype': 'help'
+    \   },
     \   'set': {
     \     'width': '50%',
     \   },
     \ },
     \ {
-    \   'match': {'bufname': 'explore'},
+    \   'match': {
+    \     'bufname': 'explore'
+    \   },
     \   'set': {
     \     'is_close_focus_out': 1,
     \   },
     \ },
     \ {
-    \   'match': {'bufname': '\[quickrun output\]'},
-    \   'set': {
-    \     'height': '11',
-    \     'move': 'bottom',
+    \   'match': {
+    \     'bufname': '[[*]unite[]*]'
     \   },
-    \ },
-    \ {
-    \   'match': {'bufname': '[[*]unite[]*]'},
     \   'set': {
     \     'height': '11',
     \     'move': 'bottom',
@@ -582,10 +590,9 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
   " always show tabline
   let g:buftabline_show = 2
   " set tab color
-  hi! BufTabLineHidden guifg=#888888 guibg=#151515
-  hi! link BufTabLineActive Normal
-  hi! BufTabLineFill guibg=#242424
-  hi! link BufTabLineCurrent Function
+  hi! BufTabLineHidden guibg=#3b3b3b
+  hi! BufTabLineFill guibg=#3b3b3b
+  hi! BufTabLineCurrent guifg=#b8bb26 guibg=#3b3b3b
 
   " indicate buffer's state
   let g:buftabline_indicators = 1
@@ -614,43 +621,6 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 " }}} /Keymaps:
 
 " }}} /Qfreplace
-
-" -----------------------------------------------------------------------
-" quickrun {{{
-" -----------------------------------------------------------------------
-
-" Settings: {{{
-
-  " default
-  let g:quickrun_config = {
-    \ '_': {
-    \ 'runner': 'vimproc',
-    \ 'runner/vimproc/updatetime': 40,
-    \ 'outputter/buffer/close_on_empty': 1,
-    \ 'outputter/buffer/running_mark': 'running...',
-    \ },
-  \ }
-  " ruby
-  let g:quickrun_config['ruby'] = {
-    \ 'command': 'pry',
-    \ 'cmdopt': '--simple-prompt',
-    \ 'runner/process_manager/load': "load '%s'",
-    \ 'runner/process_manager/prompt': '>> ',
-  \ }
-  " rspec
-  let g:quickrun_config['ruby.rspec'] = {
-    \ 'command': "rspec",
-    \ 'cmdopt': 'bundle exec',
-    \ 'exec': '%o %c %s',
-  \ }
-  " markdown (require kramdown)
-  let g:quickrun_config['markdown'] = {
-    \ 'outputter': "browser",
-  \ }
-
-" }}} /Settings:
-
-" }}} /quickrun
 
 " -----------------------------------------------------------------------
 " neocomplete {{{
@@ -749,9 +719,9 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 " Keymaps: {{{
 
   " search word you select
-  vnoremap <silent>// y:<C-u>MacDict<Space><C-r>*<CR>
+  vnoremap <silent><Leader>_ y:<C-u>MacDict<Space><C-r>*<CR>
   " search word you enter
-  nnoremap // :<C-u>MacDict<Space>
+  nnoremap <Leader>_ :<C-u>MacDict<Space>
 
 " }}} /Keymaps:
 
@@ -810,7 +780,7 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 " Settings: {{{
 
   " format setting
-  let g:anzu_status_format = "Searching... "."%p(%i/%l)"
+  let g:anzu_status_format = "[%i/%l] %p"
 
 " }}} /Settings:
 
@@ -940,12 +910,12 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 
   " set what VCS to check for
   let g:signify_vcs_list = [ 'git' ]
-
+  
   " set signcolumn color
-  highlight SignColumn        guibg=#242424
-  highlight SignifySignAdd    guibg=#242424
-  highlight SignifySignDelete guibg=#242424 
-  highlight SignifySignChange guibg=#242424 
+  highlight SignColumn        guibg=#3b3b3b
+  highlight SignifySignAdd    guibg=#3b3b3b
+  highlight SignifySignDelete guibg=#3b3b3b
+  highlight SignifySignChange guibg=#3b3b3b
 
 " }}} /Settings:
 
@@ -981,6 +951,57 @@ vnoremap <Leader>su "hy:%s/<C-r>h//gc<left><left><left>
 " }}} /Keymaps:
 
 " }}} /memolist
+
+" -----------------------------------------------------------------------
+" vim-test {{{
+" -----------------------------------------------------------------------
+
+" Settings: {{{
+
+  " run in a split window
+  let test#strategy = 'vimterminal'
+
+" }}} /Settings:
+
+" Keymaps: {{{
+
+  " nnoremap <silent><Leader>t :TestSuite<CR>
+
+" }}} /Keymaps:
+
+" }}} /vim-test
+
+" -----------------------------------------------------------------------
+" quickrun {{{
+" -----------------------------------------------------------------------
+
+" Settings: {{{
+
+  " default
+  let g:quickrun_config = {
+    \ '_': {
+      \ 'runner': 'vimproc',
+      \ 'runner/vimproc/updatetime': 40,
+      \ 'outputter': 'error',
+      \ 'outputter/error/success': 'buffer',
+      \ 'outputter/error/error': 'quickfix',
+      \ 'outputter/buffer/close_on_empty': 1,
+    \ },
+    \ 'python': {
+      \ 'command': 'python3'
+    \ }
+  \ }
+
+" }}} /Settings:
+
+" Keymaps: {{{
+
+  " run
+  nnoremap <Leader>q :<C-u>QuickRun<CR>
+
+" }}} /Keymaps:
+
+" }}} /quickrun
 
 " -----------------------------------------------------------------------
 " vim-monster {{{
