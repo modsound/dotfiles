@@ -1,0 +1,65 @@
+# [dein.toml]
+[[plugins]]
+repo = 'Shougo/dein.vim'
+
+# ---------------------------------
+# ファイラ
+# ---------------------------------
+
+[[Plugins]]
+repo = 'lambdalisue/fern.vim'
+
+[[Plugins]]
+repo = 'antoinemadec/FixCursorHold.nvim'
+
+# ---------------------------------
+# 表示
+# ---------------------------------
+
+# カラースキーマ
+[[plugins]]
+repo = 'jonathanfilip/vim-lucius'
+
+# インデントに線を表示する
+[[plugins]]
+repo = 'Yggdroot/indentLine'
+
+# ステータスバーを見やすくする
+[[plugins]]
+repo = 'vim-airline/vim-airline'
+
+# vim-airlineのテーマ
+[[plugins]]
+repo = 'vim-airline/vim-airline-themes'
+
+# バッファ一覧を表示する
+[[plugins]]
+repo = 'ap/vim-buftabline'
+
+# ---------------------------------
+# git
+# ---------------------------------
+
+# gitコマンドを使用する
+[[plugins]]
+repo = 'tpope/vim-fugitive'
+hook_add = '''
+nnoremap <silent>gs :Git status<CR>
+nnoremap <silent>gps :Git push<CR>
+nnoremap <silent>gpl :Git pull<CR>
+nnoremap <silent>gc :Git commit<CR>
+'''
+
+# ---------------------------------
+# 補完
+# ---------------------------------
+
+# 括弧を自動入力する
+[[plugins]]
+repo = 'jiangmiao/auto-pairs'
+
+# LSPを使う
+[[plugins]]
+repo = 'neoclide/coc.nvim'
+merged = 0
+rev = 'release'

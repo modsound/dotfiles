@@ -1,0 +1,17 @@
+# This is Git's per-user configuration file.
+[user]
+# Please adapt and uncomment the following lines:
+#	name = modsound
+#	email = modsound@gmail.com
+[user]
+	name = modsound
+	email = modsound@gmail.com
+[merge]
+	tool = vimdiff
+[color]
+	ui = auto
+[core]
+  editor = /usr/local/bin/nvim
+[alias]
+	unstage = reset HEAD --
+  logg = log --graph --date=short --decorate=full --pretty=format:'%C(green)%h %cd %C(blue)%cn %C(reset)%s'
