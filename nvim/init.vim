@@ -58,6 +58,7 @@ endif
 set tabstop=2                      " スペース何個で<Tab>にするか基準を指定
 set shiftwidth=0                   " <<や>>, <Enter>などでインデントした場合のスペース数を指定(0の場合tabstopの値が使用される)
 set expandtab                      " <Tab>を押すとスペース入力する(常にスペースを使用したい場合に設定する)
+set smartindent                    " 前の行に合わせてインデントする
 
 " コマンドライン
 set cmdheight=1                    " メッセージ表示スペースを確保する行数指定
@@ -134,19 +135,21 @@ nnoremap <silent>q :<C-u>bdelete<CR>
 " ノーマルモードに戻る
 inoremap <silent>jj <ESC>
 
-" 空行を挿入する
-nnoremap <silent>; :<C-u>call append(expand('.'), '')<CR>j
-
-" インデント
-nnoremap <silent><Tab> >>
-nnoremap <silent><S-Tab> <<
-
 " ウィンドウサイズを変更する
 nnoremap <silent><Up>    <C-w>-
 nnoremap <silent><Down>  <C-w>+
 nnoremap <silent><Left>  <C-w>>
 nnoremap <silent><Right> <C-w><
 
+" -----------------------------------------------------------------------
+" 編集
+" -----------------------------------------------------------------------
+" 空行を挿入する
+nnoremap <silent>; :<C-u>call append(expand('.'), '')<CR>j
+
+" インデント
+nnoremap <silent><Tab> >>
+nnoremap <silent><S-Tab> <<
 
 " -----------------------------------------------------------------------
 " ヤンク, ペースト
