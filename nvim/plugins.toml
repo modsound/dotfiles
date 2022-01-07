@@ -1,65 +1,87 @@
-# [dein.toml]
 [[plugins]]
 repo = 'Shougo/dein.vim'
 
-# ---------------------------------
-# ファイラ
-# ---------------------------------
-
-[[Plugins]]
+# -----------------------------------------------------------------------
+# ファイラ/ターミナル
+# -----------------------------------------------------------------------
+[[plugins]]
 repo = 'lambdalisue/fern.vim'
-
-[[Plugins]]
-repo = 'antoinemadec/FixCursorHold.nvim'
-
-# ---------------------------------
-# 表示
-# ---------------------------------
-
-# カラースキーマ
-[[plugins]]
-repo = 'jonathanfilip/vim-lucius'
-
-# インデントに線を表示する
-[[plugins]]
-repo = 'Yggdroot/indentLine'
-
-# ステータスバーを見やすくする
-[[plugins]]
-repo = 'vim-airline/vim-airline'
-
-# vim-airlineのテーマ
-[[plugins]]
-repo = 'vim-airline/vim-airline-themes'
-
-# バッファ一覧を表示する
-[[plugins]]
-repo = 'ap/vim-buftabline'
-
-# ---------------------------------
-# git
-# ---------------------------------
-
-# gitコマンドを使用する
-[[plugins]]
-repo = 'tpope/vim-fugitive'
 hook_add = '''
-nnoremap <silent>gs :Git status<CR>
-nnoremap <silent>gps :Git push<CR>
-nnoremap <silent>gpl :Git pull<CR>
-nnoremap <silent>gc :Git commit<CR>
+  " 起動
+  nnoremap <silent><C-t> :Fern . -drawer -reveal=% -toggle -stay<CR>
+  " 隠しファイルを表示する
+  let g:fern#default_hidden=1
 '''
 
-# ---------------------------------
+[[plugins]] # fernの動作改善
+repo = 'antoinemadec/FixCursorHold.nvim'
+
+# -----------------------------------------------------------------------
+# 表示
+# -----------------------------------------------------------------------
+[[plugins]] # カラースキーマ
+repo = 'jonathanfilip/vim-lucius'
+
+[[plugins]] # インデントに線を表示する
+repo = 'Yggdroot/indentLine'
+hook_add = '''
+  let g:indentLine_color_term =239
+  let g:indentLine_color_gui = '#708090'
+  let g:indentLine_char = '¦'
+'''
+
+[[plugins]] # ステータスバーを見やすくする
+repo = 'vim-airline/vim-airline'
+
+[[plugins]] # vim-airlineのテーマ
+repo = 'vim-airline/vim-airline-themes'
+
+[[plugins]] # バッファをタブ表示する
+repo = 'ap/vim-buftabline'
+
+# -----------------------------------------------------------------------
 # 補完
-# ---------------------------------
+# -----------------------------------------------------------------------
+[[plugins]] # Rubyのend等を自動入力する
+repo = 'tpope/vim-endwise'
 
-# 括弧を自動入力する
-[[plugins]]
-repo = 'jiangmiao/auto-pairs'
-
-# LSPを使う
-[[plugins]]
+[[plugins]] # LSPを使う
 repo = 'neoclide/coc.nvim'
-merged = 0
 rev = 'release'
+on_i = 1
+build = '''
+  git checkout release
+'''
+hook_add = '''
+  " 対応言語追加
+  let g:coc_global_extensions = [
+    \ 'coc-json', 'coc-css', 'coc-prettier', 'coc-python', 'coc-markdownlint', 'coc-vimlsp', 'coc-sh', 'coc-toml', 'coc-yaml', 'coc-pairs'
+  \ ]
+
+  " <S-J><S-K>で候補選択
+  inoremap <silent><expr> <S-J> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<S-J>" : coc#refresh()
+  inoremap <expr><S-K> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+  function! s:check_back_space() abort
+    let col = col('.') - 1
+    return !col || getline('.')[col - 1]  =~# '\s'
+  endfunction
+
+  " 定義に移動
+  nmap <silent> gd <Plug>(coc-definition)
+  nmap <silent> gy <Plug>(coc-type-definition)
+  nmap <silent> gi <Plug>(coc-implementation)
+  nmap <silent> gr <Plug>(coc-references)
+'''
+
+# -----------------------------------------------------------------------
+# 移動
+# -----------------------------------------------------------------------
+[[plugins]] # 選択行を移動する
+repo = 't9md/vim-textmanip'
+hook_add = '''
+  vmap <C-j> <Plug>(textmanip-move-down)
+  vmap <C-k> <Plug>(textmanip-move-up)
+  vmap <C-h> <Plug>(textmanip-move-left)
+  vmap <C-l> <Plug>(textmanip-move-right)
+'''

@@ -1,9 +1,11 @@
 " maintainer: modsound@gmail.com
-"
+
+" マップリーダーを指定(tomlの中でLeader使ったキーマップするため)
+let mapleader = "\<Space>"
+
 " -----------------------------------------------------------------------
 " Dein:
 " -----------------------------------------------------------------------
-
 if &compatible
 	set nocompatible
 endif
@@ -20,19 +22,18 @@ let s:lazy_toml = s:toml_path . '/plugins-lazy.toml'
 " deinがない場合インストールする
 if &runtimepath !~# '/dein.vim'
   if !isdirectory(s:dein_repo_path)
+    echo "Deinが見つからないのでインストールします"
     execute '!git clone https://github.com/Shougo/dein.vim' s:dein_repo_path
   endif
   execute 'set runtimepath^=' . s:dein_repo_path
 endif
-
-let g:dein#enable_notification = 1 
 
 " tomlの読み込み
 if dein#load_state(s:dein_path)
   call dein#begin(s:dein_path)
 
   if filereadable(s:toml)
-    call dein#load_toml(s:toml, {'lazy': 0})
+    call dein#load_toml(s:toml,      {'lazy': 0})
   endif
   if filereadable(s:lazy_toml)
     call dein#load_toml(s:lazy_toml, {'lazy': 1})
@@ -53,7 +54,6 @@ endif
 " -----------------------------------------------------------------------
 " Basic Settings:
 " -----------------------------------------------------------------------
-
 " インデント
 set tabstop=2                      " スペース何個で<Tab>にするか基準を指定
 set shiftwidth=0                   " <<や>>, <Enter>などでインデントした場合のスペース数を指定(0の場合tabstopの値が使用される)
@@ -95,6 +95,7 @@ set showmatch matchtime=1          " 対応する括弧を強調表示する
 set display+=lastline              " 1行が長くても省略せず最後まで表示する
 set scrolloff=2                    " スクロール時に、指定した行数マージンをとる
 set ambiwidth=double               " 2バイト文字の表示幅を全角にする
+set signcolumn=yes                 " Sign列を常に表示する
 
 " 2バイト文字を強調表示する
 hi ZenkakuSpace cterm=underline ctermfg=lightblue guibg=red
@@ -118,10 +119,6 @@ set isk+=-                         " ハイフンを単語に含める
 " -----------------------------------------------------------------------
 " Basic Key Mappings:
 " -----------------------------------------------------------------------
-
-" マップリーダーを指定
-let mapleader = "\<Space>"
-
 " init.vimを開く
 nnoremap <silent><Leader>e. :<C-u>edit ~/dotfiles/nvim/init.vim<CR>
 
@@ -140,11 +137,9 @@ inoremap <silent>jj <ESC>
 " 空行を挿入する
 nnoremap <silent>; :<C-u>call append(expand('.'), '')<CR>j
 
-" 検索ハイライトを無効にする
-nnoremap <silent><BS> :let @/ = ""<CR>
-
-" 検索で一般的な正規表現を使用する
-nnoremap / /\v
+" インデント
+nnoremap <silent><Tab> >>
+nnoremap <silent><S-Tab> <<
 
 " ウィンドウサイズを変更する
 nnoremap <silent><Up>    <C-w>-
@@ -152,6 +147,10 @@ nnoremap <silent><Down>  <C-w>+
 nnoremap <silent><Left>  <C-w>>
 nnoremap <silent><Right> <C-w><
 
+
+" -----------------------------------------------------------------------
+" ヤンク, ペースト
+" -----------------------------------------------------------------------
 " ペースト後の文字に移動する
 vnoremap <silent>y y`]
 vnoremap <silent>p p`]
@@ -160,10 +159,24 @@ nnoremap <silent>p p`]
 " 行末までヤンクする
 nnoremap Y y$
 
+" ビジュアルモードで対象を選択して連続ペーストする
+xnoremap p "_xP
+
+" -----------------------------------------------------------------------
+" 検索
+" -----------------------------------------------------------------------
+" カーソル下の文字をハイライトする
+nnoremap <silent><Leader><Leader> :let @/ = '\<' . expand('<cword>') . '\>'<CR>:set hlsearch<CR>
+
+" カーソル下の文字をハイライトしてから置換する
+nmap # <Space><Space>:%s/<C-r>///g<Left><Left>
+
+" 検索ハイライトを無効にする
+nnoremap <silent><BS> :let @/ = ""<CR>
+
 " -----------------------------------------------------------------------
 " 移動
 " -----------------------------------------------------------------------
-
 " 表示行で移動する
 noremap j gj
 noremap k gk
@@ -190,8 +203,8 @@ nnoremap <silent><C-j> :<C-u>keepjumps normal! }<CR>
 nnoremap <silent><C-k> :<C-u>keepjumps normal! {<CR>
 
 " 他のウィンドウに移動する
-nnoremap <silent><TAB> :<C-u>wincmd w<CR>
-nnoremap <silent><S-TAB> :<C-u>wincmd W<CR>
+nmap <silent><C-l> :<C-u>wincmd w<CR>
+nmap <silent><C-h> :<C-u>wincmd W<CR>
 
 " 他のバッファに移動する
 nnoremap <silent><C-n> :<C-u>bnext<CR>
@@ -200,6 +213,8 @@ nnoremap <silent><C-p> :<C-u>bprevious<CR>
 " -----------------------------------------------------------------------
 " 画面分割
 " -----------------------------------------------------------------------
-
 " 分割する
 nnoremap <silent><Leader>sp :<C-u>vs<CR><C-w>l
+
+" ヘルプを右に表示する
+command! -nargs=1 -complete=help H :vertical belowright help <args>
