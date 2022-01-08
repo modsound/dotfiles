@@ -209,10 +209,6 @@ nnoremap <silent><C-k> :<C-u>keepjumps normal! {<CR>
 nmap <silent><C-l> :<C-u>wincmd w<CR>
 nmap <silent><C-h> :<C-u>wincmd W<CR>
 
-" 他のバッファに移動する
-nnoremap <silent><C-n> :<C-u>bnext<CR>
-nnoremap <silent><C-p> :<C-u>bprevious<CR>
-
 " -----------------------------------------------------------------------
 " 画面分割
 " -----------------------------------------------------------------------

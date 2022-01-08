@@ -1,5 +1,9 @@
 [[plugins]]
 repo = 'Shougo/dein.vim'
+hook_add = '''
+  " 自動削除有効化
+  let g:dein#auto_recache = 1
+'''
 
 # -----------------------------------------------------------------------
 # ファイラ/ターミナル
@@ -69,12 +73,27 @@ hook_add = '''
 
 [[plugins]] # ステータスバーを見やすくする
 repo = 'vim-airline/vim-airline'
+hook_add = '''
+  " 隣のバッファに移動する
+  nmap <C-n> <Plug>AirlineSelectNextTab
+  nmap <C-p> <Plug>AirlineSelectPrevTab
 
-[[plugins]] # vim-airlineのテーマ
+  " ステータスラインの表示を変更する
+  let g:airline#extensions#default#layout = [
+    \ [ 'a', 'b', 'c' ], ['x', 'y', 'z']
+  \ ]
+  let g:airline_section_b = '%{getcwd()}'    " カレントディレクトリを表示する
+  let g:airline_section_c = '%t %M'          " ファイル名だけ表示する
+  let g:airline_section_z = get(g:, 'airline_linecolumn_prefix', '').'%3l:%-2v'
+
+  " バッファタブの表示を変更する
+  let g:airline#extensions#tabline#enabled = 1        " タブライン機能を有効にする
+  let g:airline#extensions#tabline#fnamemod = ':t'    " ファイルパスを表示しない
+  let g:airline#extensions#tabline#show_buffers = 1   " バッファを表示する
+'''
+
+[[plugins]]
 repo = 'vim-airline/vim-airline-themes'
-
-[[plugins]] # バッファをタブ表示する
-repo = 'ap/vim-buftabline'
 
 # -----------------------------------------------------------------------
 # 補完
