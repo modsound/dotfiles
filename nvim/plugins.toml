@@ -12,7 +12,8 @@ hook_add = '''
 repo = 'lambdalisue/fern.vim'
 hook_add = '''
   " 起動
-  nnoremap <silent><C-t> :Fern . -drawer -reveal=% -toggle -stay<CR>
+  nnoremap <silent><C-w> :Fern . -drawer -reveal=% -toggle -stay<CR>
+
   " 隠しファイルを表示する
   let g:fern#default_hidden=1
 
@@ -84,7 +85,7 @@ hook_add = '''
   \ ]
   let g:airline_section_b = '%{getcwd()}'    " カレントディレクトリを表示する
   let g:airline_section_c = '%t %M'          " ファイル名だけ表示する
-  let g:airline_section_z = get(g:, 'airline_linecolumn_prefix', '').'%3l:%-2v'
+  let g:airline_section_z = get(g:, 'airline_linecolumn_prefix', '').'%p%%'
 
   " バッファタブの表示を変更する
   let g:airline#extensions#tabline#enabled = 1        " タブライン機能を有効にする
@@ -111,7 +112,7 @@ build = '''
 hook_add = '''
   " 対応言語追加
   let g:coc_global_extensions = [
-    \ 'coc-json', 'coc-css', 'coc-prettier', 'coc-python', 'coc-markdownlint', 'coc-vimlsp', 'coc-sh', 'coc-toml', 'coc-yaml', 'coc-pairs'
+    \ 'coc-json', 'coc-css', 'coc-prettier', 'coc-python', 'coc-markdownlint', 'coc-vimlsp', 'coc-sh', 'coc-toml', 'coc-yaml'
   \ ]
 
   " <S-J><S-K>で候補選択
@@ -124,10 +125,17 @@ hook_add = '''
   endfunction
 
   " 定義に移動
-  nmap <silent> gd <Plug>(coc-definition)
-  nmap <silent> gy <Plug>(coc-type-definition)
-  nmap <silent> gi <Plug>(coc-implementation)
-  nmap <silent> gr <Plug>(coc-references)
+  nmap <silent>gd <Plug>(coc-definition)
+  nmap <silent>gy <Plug>(coc-type-definition)
+  nmap <silent>gi <Plug>(coc-implementation)
+  nmap <silent>gr <Plug>(coc-references)
+'''
+
+[[plugins]] # コメントアウトする
+repo = 'tyru/caw.vim.git'
+hook_add = '''
+  nmap cc <Plug>(caw:hatpos:toggle)
+  vmap cc <Plug>(caw:hatpos:toggle)
 '''
 
 # -----------------------------------------------------------------------

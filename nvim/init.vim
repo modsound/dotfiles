@@ -106,6 +106,7 @@ match ZenkakuSpace /　/
 set background=dark                " 背景色指定
 set termguicolors                  " TrueColorのsyntax hilightを有効にする
 colorscheme lucius
+set pumblend=10                    " ポップアップメニューを半透明にする
 
 " その他
 set clipboard+=unnamedplus,unnamed " OSとクリップボードを共有する
@@ -116,15 +117,16 @@ set wildmenu                       " コマンドモードでtabキーを押す�
 set backspace=indent,eol,start     " インサートモードでもバックスペースで削除する
 set noequalalways                  " ウィンドウサイズの自動調整を無効にする
 set isk+=-                         " ハイフンを単語に含める
+set splitright                     " ウィンドウは右に開く
 
 " -----------------------------------------------------------------------
 " Basic Key Mappings:
 " -----------------------------------------------------------------------
-" init.vimを開く
-nnoremap <silent><Leader>e. :<C-u>edit ~/dotfiles/nvim/init.vim<CR>
+" init.vimとplugins.tomlを開く
+nnoremap <silent><Leader>1 :<C-u>args ~/dotfiles/nvim/init.vim ~/dotfiles/nvim/plugins.toml<CR>
 
-" dein.tomlを開く
-nnoremap <silent><Leader>e, :<C-u>edit ~/dotfiles/nvim/plugins.toml<CR>
+" メモを開く
+nnoremap <silent><Leader>m :<C-u>edit $HOME/Library/CloudStorage/Box-Box/memo/Todo.md<CR>
 
 " 現在のバッファを反映する
 nnoremap <silent><Leader>s. :<C-u>execute "source " expand("%:p")<CR>
@@ -134,12 +136,6 @@ nnoremap <silent>q :<C-u>bdelete<CR>
 
 " ノーマルモードに戻る
 inoremap <silent>jj <ESC>
-
-" ウィンドウサイズを変更する
-nnoremap <silent><Up>    <C-w>-
-nnoremap <silent><Down>  <C-w>+
-nnoremap <silent><Left>  <C-w>>
-nnoremap <silent><Right> <C-w><
 
 " -----------------------------------------------------------------------
 " 編集
@@ -213,7 +209,7 @@ nmap <silent><C-h> :<C-u>wincmd W<CR>
 " 画面分割
 " -----------------------------------------------------------------------
 " 分割する
-nnoremap <silent><Leader>sp :<C-u>vs<CR><C-w>l
+nnoremap <silent><C-s> :<C-u>vs<CR><C-w>l
 
 " ヘルプを右に表示する
 command! -nargs=1 -complete=help H :vertical belowright help <args>
