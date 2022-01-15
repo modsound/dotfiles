@@ -117,29 +117,24 @@ set wildmenu                       " コマンドモードでtabキーを押す�
 set backspace=indent,eol,start     " インサートモードでもバックスペースで削除する
 set noequalalways                  " ウィンドウサイズの自動調整を無効にする
 set isk+=-                         " ハイフンを単語に含める
-set splitright                     " ウィンドウは右に開く
+set splitright                     " 分割ウィンドウは右に開く
+set splitbelow                     " 分割ウィンドウは下に開く
 
 " -----------------------------------------------------------------------
 " Basic Key Mappings:
 " -----------------------------------------------------------------------
-" init.vimとplugins.tomlを開く
-nnoremap <silent><Leader>1 :<C-u>args ~/dotfiles/nvim/init.vim ~/dotfiles/nvim/plugins.toml<CR>
-
-" メモを開く
-nnoremap <silent><Leader>m :<C-u>edit $HOME/Library/CloudStorage/Box-Box/memo/Todo.md<CR>
-
-" 現在のバッファを反映する
-nnoremap <silent><Leader>s. :<C-u>execute "source " expand("%:p")<CR>
-
-" バッファを閉じる
-nnoremap <silent>q :<C-u>bdelete<CR>
-
 " ノーマルモードに戻る
 inoremap <silent>jj <ESC>
 
 " -----------------------------------------------------------------------
 " 編集
 " -----------------------------------------------------------------------
+" init.vimとplugins.tomlを開く
+nnoremap <silent><Leader>1 :<C-u>args $HOME/dotfiles/nvim/init.vim $HOME/dotfiles/nvim/plugins.toml<CR>
+
+" バッファを閉じる
+nnoremap <silent>q :<C-u>bdelete<CR>
+
 " 空行を挿入する
 nnoremap <silent>; :<C-u>call append(expand('.'), '')<CR>j
 
