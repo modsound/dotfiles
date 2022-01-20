@@ -8,7 +8,8 @@ hook_add = '''
 # -----------------------------------------------------------------------
 # ファイラ/ターミナル
 # -----------------------------------------------------------------------
-[[plugins]]
+
+[[plugins]] # ファイラ
 repo = 'lambdalisue/fern.vim'
 hook_add = '''
   " 起動
@@ -22,7 +23,7 @@ hook_add = '''
 
   " キーマップ
   function! s:fern_init() abort
-    nmap <buffer> v <Plug>(fern-action-open:side)
+    nmap <buffer> o <Plug>(fern-action-open:side)
     nmap <buffer> M <Plug>(fern-action-new-dir)
     nmap <buffer> ! <Plug>(fern-action-hidden:toggle)
     nmap <buffer> - <Plug>(fern-action-mark:toggle)
@@ -73,6 +74,7 @@ hook_add = '''
 # -----------------------------------------------------------------------
 # 表示
 # -----------------------------------------------------------------------
+
 [[plugins]] # カラースキーマ
 repo = 'jonathanfilip/vim-lucius'
 
@@ -111,6 +113,7 @@ repo = 'vim-airline/vim-airline-themes'
 # -----------------------------------------------------------------------
 # 補完
 # -----------------------------------------------------------------------
+
 [[plugins]] # Rubyのend等を自動入力する
 repo = 'tpope/vim-endwise'
 
@@ -124,7 +127,8 @@ build = '''
 hook_add = '''
   " 対応言語追加
   let g:coc_global_extensions = [
-    \ 'coc-json', 'coc-css', 'coc-prettier','coc-jedi', 'coc-vimlsp', 'coc-sh', 'coc-toml', 'coc-yaml', 'coc-solargraph'
+    \ 'coc-json', 'coc-css', 'coc-prettier','coc-jedi', 'coc-vimlsp', 'coc-sh', 'coc-git',
+    \ 'coc-toml', 'coc-yaml', 'coc-solargraph', 'coc-pairs', 'coc-word', 'coc-html'
   \ ]
 
   " <S-J><S-K>で候補選択
@@ -156,6 +160,7 @@ repo = 'tpope/vim-surround'
 # -----------------------------------------------------------------------
 # 移動
 # -----------------------------------------------------------------------
+
 [[plugins]] # 選択行を移動する
 repo = 't9md/vim-textmanip'
 hook_add = '''
@@ -168,5 +173,15 @@ hook_add = '''
 # -----------------------------------------------------------------------
 # 特定言語
 # -----------------------------------------------------------------------
+
 [[plugins]] # rails
 repo = 'tpope/vim-rails'
+
+[[plugins]] # markdown
+repo = 'plasticboy/vim-markdown'
+hook_add = '''
+  " 折りたたみを無効化する
+  let g:vim_markdown_folding_disabled = 1
+  " デフォルトのキーマップを無効化する
+  let g:vim_markdown_no_default_key_mappings = 1
+'''
