@@ -97,6 +97,7 @@ set display+=lastline              " 1行が長くても省略せず最後まで
 set scrolloff=2                    " スクロール時に、指定した行数マージンをとる
 set ambiwidth=double               " 2バイト文字の表示幅を全角にする
 set signcolumn=yes                 " Sign列を常に表示する
+set pumheight=10                   " 補完ポップアップの高さを指定する
 
 " 2バイト文字を強調表示する
 hi ZenkakuSpace cterm=underline ctermfg=lightblue guibg=red
@@ -155,6 +156,11 @@ nnoremap Y y$
 
 " ビジュアルモードで対象を選択して連続ペーストする
 xnoremap p "_xP
+
+" dで削除した場合はヤンクしない
+nnoremap d "_d
+nnoremap dd "_dd
+nnoremap D "_D
 
 " -----------------------------------------------------------------------
 " 検索
