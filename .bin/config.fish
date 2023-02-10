@@ -8,21 +8,14 @@ set fish_greeting
 ## local bin
 set -x PATH /usr/local/bin $PATH
 
-## pyenv
-set -Ux PYENV_ROOT $HOME/.pyenv
-set -U fish_user_paths $PYENV_ROOT/bin $fish_user_paths
-status is-login; and pyenv init --path | source
-pyenv init - | source
-
-# rbenv
-rbenv init - | source
+# brew
+set PATH /opt/homebrew/bin $PATH
 
 # Alias
 
 ## cd alias
 alias ..='cd ../'
 alias ...='cd ../..'
-alias p='cd ~/Documents/code/'
 alias die='rm -rf'
 
 ## App
@@ -30,6 +23,9 @@ alias v='nvim'
 alias vi='nvim'
 alias n='nvim'
 alias g='git'
+
+## Command
+alias l='ls -a'
 
 # Prompt
 

@@ -106,7 +106,7 @@ match ZenkakuSpace /　/
 " colorscheme
 set background=dark                " 背景色指定
 set termguicolors                  " TrueColorのsyntax hilightを有効にする
-colorscheme lucius
+silent! colorscheme lucius
 set pumblend=10                    " ポップアップメニューを半透明にする
 
 " その他
@@ -131,7 +131,7 @@ inoremap <silent>jj <ESC>
 " 編集
 " -----------------------------------------------------------------------
 " init.vimとplugins.tomlを開く
-nnoremap <silent><Leader>1 :<C-u>args $HOME/dotfiles/nvim/init.vim $HOME/dotfiles/nvim/plugins.toml<CR>
+nnoremap <silent><Leader>1 :<C-u>args $HOME/dotfiles/.bin/init.vim $HOME/dotfiles/.bin/plugins.toml<CR>
 
 " バッファを閉じる
 nnoremap <silent>q :<C-u>bdelete<CR>
