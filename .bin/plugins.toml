@@ -21,55 +21,34 @@ nnoremap <silent><Leader>m :Fern $HOME/Library/CloudStorage/Box-Box/ -drawer -to
 " 隠しファイルを表示する
 let g:fern#default_hidden=1
 
-" キーマップ
-function! s:fern_init() abort
-  nmap <buffer> o <Plug>(fern-action-open:side)
-  nmap <buffer> M <Plug>(fern-action-new-dir)
-  nmap <buffer> ! <Plug>(fern-action-hidden:toggle)
-  nmap <buffer> - <Plug>(fern-action-mark:toggle)
-  vmap <buffer> - <Plug>(fern-action-mark:toggle)
-  nmap <buffer> C <Plug>(fern-action-clipboard-copy)
-  nmap <buffer> X <Plug>(fern-action-clipboard-move)
-  nmap <buffer> P <Plug>(fern-action-clipboard-paste)
-  nmap <buffer> h <Plug>(fern-action-collapse)
-  nmap <buffer> c <Plug>(fern-action-copy)
-  nmap <buffer> <leader>h <Plug>(fern-action-leave)
-  nmap <buffer> m <Plug>(fern-action-move)
-  nmap <buffer> N <Plug>(fern-action-new-file)
-  nmap <buffer> <cr> <Plug>(fern-action-open-or-enter)
-  nmap <buffer> l <Plug>(fern-action-open-or-expand)
-  nmap <buffer> s <Plug>(fern-action-open:select)
-  nmap <buffer> t <Plug>(fern-action-open:tabedit)
-  nmap <buffer> r <Plug>(fern-action-rename)
-  nmap <buffer> i <Plug>(fern-action-reveal)
-  nmap <buffer> D <Plug>(fern-action-trash)
-  nmap <buffer> y <Plug>(fern-action-yank)
-  nmap <buffer> gr <Plug>(fern-action-grep)
-  nmap <buffer> d <Plug>(fern-action-remove)
-  nmap <buffer> B <Plug>(fern-action-save-as-bookmark)
-  nmap <buffer> cd <Plug>(fern-action-tcd)
-endfunction
-
-augroup FernEvents
-  autocmd!
-  autocmd FileType fern call s:fern_init()
-augroup END
-
-" デフォルトのキーマップを無効化
-let g:fern#disable_default_mappings = 1
 '''
 
 [[plugins]] # fernの動作改善
 repo = 'antoinemadec/FixCursorHold.nvim'
 
-[[plugins]] # fuzzy finder
+[[plugins]] # fernでプレビューする
+repo = 'yuki-yano/fern-preview.vim'
+hook_add = '''
+function! s:fern_settings() abort
+  nmap <silent> <buffer> p     <Plug>(fern-action-preview:toggle)
+  nmap <silent> <buffer> <C-p> <Plug>(fern-action-preview:auto:toggle)
+  nmap <silent> <buffer> <C-d> <Plug>(fern-action-preview:scroll:down:half)
+  nmap <silent> <buffer> <C-u> <Plug>(fern-action-preview:scroll:up:half)
+endfunction
+
+augroup fern-settings
+  autocmd!
+  autocmd FileType fern call s:fern_settings()
+augroup END
+'''
+
+[[plugins]] # telescopeの依存プラグイン
 repo = "nvim-lua/plenary.nvim"
 
 [[plugins]] # fuzzy finder
 repo = "nvim-telescope/telescope.nvim"
 hook_add = '''
-nnoremap <leader>f <cmd>lua require('telescope.builtin').find_files()<cr>
-nnoremap <leader>g <cmd>lua require('telescope.builtin').live_grep()<cr>
+nnoremap <leader>g <cmd>lua require('telescope.builtin').live_grep({grep_open_files=true})<CR>
 '''
 
 [[plugins]] # インタプリタ実行
@@ -150,20 +129,16 @@ let g:coc_global_extensions = [
   \ 'coc-toml', 'coc-yaml', 'coc-solargraph', 'coc-pairs', 'coc-word', 'coc-html'
 \ ]
 
-" <S-J><S-K>で候補選択
-inoremap <silent><expr> <S-J> pumvisible() ? "\<C-n>" : <SID>check_back_space() ? "\<S-J>" : coc#refresh()
-inoremap <expr><S-K> pumvisible() ? "\<C-p>" : "\<C-h>"
+" 候補を選択する
+inoremap <silent><expr><C-n> coc#pum#visible() ? coc#pum#next(1) :CheckBackspace() ? "\<C-n>" :coc#refresh()
+inoremap <expr><C-p> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+" <CR>で候補を決定する
+inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm(): "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
 
-function! s:check_back_space() abort
+function! CheckBackspace() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
-" 定義に移動
-nmap <silent>gd <Plug>(coc-definition)
-nmap <silent>gy <Plug>(coc-type-definition)
-nmap <silent>gi <Plug>(coc-implementation)
-nmap <silent>gr <Plug>(coc-references)
 '''
 
 [[plugins]] # コメントアウトする
@@ -192,6 +167,15 @@ vmap <C-l> <Plug>(textmanip-move-right)
 [[plugins]] # 行を跨いでf移動できるようにする
 repo = 'rhysd/clever-f.vim'
 
+[[plugins]] # easymotion系プラグイン
+repo = 'yuki-yano/fuzzy-motion.vim'
+hook_add = '''
+nnoremap <Leader>f :FuzzyMotion<CR>
+'''
+
+[[plugins]] # fuzzy-motion依存プラグイン
+repo = 'vim-denops/denops.vim'
+
 # -----------------------------------------------------------------------
 # 特定言語
 # -----------------------------------------------------------------------
@@ -200,12 +184,14 @@ repo = 'rhysd/clever-f.vim'
 repo = 'tpope/vim-rails'
 
 [[plugins]] # markdown
-repo = 'plasticboy/vim-markdown'
+repo = 'preservim/vim-markdown'
 hook_add = '''
 " 折りたたみを無効化する
 let g:vim_markdown_folding_disabled = 1
 " デフォルトのキーマップを無効化する
 let g:vim_markdown_no_default_key_mappings = 1
+" 改行時のインデント数を指定する
+let g:vim_markdown_new_list_item_indent = 2
 '''
 
 [[plugins]] # pythonのインデントをPEP8準拠にする

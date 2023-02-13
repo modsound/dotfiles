@@ -11,6 +11,11 @@ set -x PATH /usr/local/bin $PATH
 # brew
 set PATH /opt/homebrew/bin $PATH
 
+# pyenv
+set -x PYENV_ROOT $HOME/.pyenv
+set -x PATH $PYENV_ROOT/bin $PATH
+pyenv init - | source
+
 # Alias
 
 ## cd alias

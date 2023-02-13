@@ -7,7 +7,3 @@ ln -sf ~/dotfiles/.bin/.Brewfile ~/.Brewfile
 
 echo "Brewfileで指定されたプログラムをインストールします。"
 brew bundle --global
-
-echo "不要ファイルを削除します。"
-brew cleanup
-brew cask cleanup
